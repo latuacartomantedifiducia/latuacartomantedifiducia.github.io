@@ -56,6 +56,28 @@ body{margin:0;background:#211725;color:#fff;font-family:Georgia,'Times New Roman
  .content-section{padding:42px 18px}
  .content-card{padding:28px 22px}
 }
+
+/* ===== INTRO INIZIALE ===== */
+#site-intro{position:fixed;inset:0;z-index:2147483647;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 50% 42%,#3b2845 0%,#211725 48%,#120d16 100%);overflow:hidden;opacity:1;visibility:visible;transition:opacity .9s ease,visibility .9s ease}
+#site-intro.is-hidden{opacity:0;visibility:hidden;pointer-events:none}
+#site-intro .intro-stars{position:absolute;inset:0;background-image:radial-gradient(circle,rgba(220,191,121,.55) 0 1px,transparent 1.5px),radial-gradient(circle,rgba(255,255,255,.28) 0 1px,transparent 1.5px);background-size:115px 115px,175px 175px;background-position:15px 25px,80px 100px;opacity:.32;animation:introStars 12s linear infinite}
+#site-intro .intro-content{position:relative;z-index:2;width:min(92vw,620px);text-align:center;padding:30px 20px;display:flex;flex-direction:column;align-items:center}
+#site-intro .intro-mark{width:92px;height:132px;position:relative;margin:0 0 30px;filter:drop-shadow(0 14px 24px rgba(0,0,0,.42));animation:introFloat 3.8s ease-in-out infinite}
+#site-intro .intro-card{position:absolute;width:76px;height:108px;left:8px;top:12px;border:1px solid rgba(224,194,126,.82);border-radius:7px;background:linear-gradient(145deg,#302039,#17111d);transform:rotate(-10deg);box-shadow:0 0 0 1px rgba(224,194,126,.12) inset}
+#site-intro .intro-card:before{content:'✦';position:absolute;inset:13px;border:1px solid rgba(224,194,126,.48);border-radius:4px;color:#d9b968;font-size:32px;display:flex;align-items:center;justify-content:center}
+#site-intro .intro-card:after{content:'☾';position:absolute;bottom:9px;left:0;right:0;color:rgba(224,194,126,.72);font-size:13px}
+#site-intro .intro-card.back{left:18px;top:3px;transform:rotate(10deg);background:linear-gradient(155deg,#3a2645,#201522);opacity:.72}
+#site-intro .intro-card.back:before{content:'✧';font-size:25px}
+#site-intro .intro-kicker{margin:0 0 10px;color:#d9b968;font-size:12px;letter-spacing:.28em;text-transform:uppercase}
+#site-intro h1{margin:0;color:#f5e9d0;font-size:clamp(30px,6vw,54px);font-weight:400;letter-spacing:.035em;line-height:1.08;text-shadow:0 2px 18px rgba(0,0,0,.45)}
+#site-intro .intro-line{width:90px;height:1px;background:#d9b968;margin:20px auto 20px;opacity:.8}
+#site-intro .intro-motto{margin:0;color:#eee4d5;font-size:clamp(16px,2.8vw,21px);line-height:1.65;font-style:italic;max-width:520px}
+#site-intro .intro-enter{margin-top:31px;display:inline-flex;align-items:center;justify-content:center;min-width:155px;padding:12px 25px;border:1px solid rgba(217,185,104,.9);border-radius:2px;background:transparent;color:#f5e9d0;text-decoration:none;font-family:Georgia,'Times New Roman',serif;font-size:14px;letter-spacing:.08em;cursor:pointer;transition:background .3s ease,color .3s ease,transform .3s ease}
+#site-intro .intro-enter:hover{background:#d9b968;color:#211725;transform:translateY(-1px)}
+#site-intro .intro-note{margin-top:16px;color:rgba(245,233,208,.55);font-size:11px;letter-spacing:.05em}
+@keyframes introFloat{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-8px) rotate(1deg)}}
+@keyframes introStars{from{background-position:15px 25px,80px 100px}to{background-position:130px 140px,0 0}}
+@media(max-width:600px){#site-intro .intro-content{padding:24px 18px}#site-intro .intro-mark{margin-bottom:23px;transform:scale(.9)}#site-intro h1{font-size:31px}#site-intro .intro-motto{font-size:16px;line-height:1.55}#site-intro .intro-enter{margin-top:26px}}
 </style>
 
 
@@ -190,7 +212,22 @@ img{max-width:100%;}
 }
 </style>
 </head>
-<body>
+<body><div id="site-intro" role="dialog" aria-label="Introduzione al sito">
+  <div class="intro-stars" aria-hidden="true"></div>
+  <div class="intro-content">
+    <div class="intro-mark" aria-hidden="true">
+      <div class="intro-card back"></div>
+      <div class="intro-card"></div>
+    </div>
+    <p class="intro-kicker">La Tua Cartomante di Fiducia</p>
+    <h1>Ognuno ha un destino.</h1>
+    <div class="intro-line" aria-hidden="true"></div>
+    <p class="intro-motto">Il tuo… scoprilo insieme a me.</p>
+    <button class="intro-enter" type="button" id="intro-enter">Entra nel sito</button>
+    <div class="intro-note">Consulti personalizzati, con sensibilità e riservatezza.</div>
+  </div>
+</div>
+
 <div class="page">
 <div class="home-art">
 <div id="home-top" aria-hidden="true"></div>
@@ -444,6 +481,23 @@ const f=document.getElementById('contactForm');if(f)f.onsubmit=e=>{e.preventDefa
       window.open(url,'_blank','noopener');
     }
   },true);
+})();
+</script>
+<script id="site-intro-script">
+(function(){
+  const intro=document.getElementById('site-intro');
+  const enter=document.getElementById('intro-enter');
+  if(!intro) return;
+  function closeIntro(){
+    intro.classList.add('is-hidden');
+    document.documentElement.style.overflow='';
+    document.body.style.overflow='';
+    setTimeout(function(){ if(intro.parentNode) intro.parentNode.removeChild(intro); },950);
+  }
+  document.documentElement.style.overflow='hidden';
+  document.body.style.overflow='hidden';
+  if(enter) enter.addEventListener('click',closeIntro);
+  setTimeout(closeIntro,6500);
 })();
 </script>
 </body></html>
